@@ -4,4 +4,4 @@ This folder contain a group of folder which each one contains a nodeJS applicati
 
 Follows a short description of each folder:
 
-- [express-demo](/express-demo): This folder contain a group of folder which each one contains a nodeJS application, base on some tutorial
+- [express-demo](./express-demo): This folder contain a group of folder which each one contains a nodeJS application, base on some tutorial
