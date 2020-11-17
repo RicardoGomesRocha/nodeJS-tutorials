@@ -1,0 +1,16 @@
+{
+    "name": "express-js",
+    "version": "1.0.0",
+    "description": "express-js toturial",
+    "main": "app.js",
+    "scripts": {
+        "test": "npm test",
+        "start": "nodemon app.js",
+        "start-server": "node app.js"
+    },
+    "author": "Ricardo Rocha",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.17.1"
+    }
+}
