@@ -9,7 +9,7 @@ const { products } = require('./admin');
 
 router.get('/', (request, response) => {
     console.log('shop.js', products);
-    response.sendFile(path.join(rootDir, 'views', 'shop.html'));
+    response.render('shop');
 });
 
 module.exports = router;
