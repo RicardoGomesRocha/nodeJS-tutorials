@@ -8,12 +8,18 @@ const products = [];
 
 // /admin/add-product => GET
 router.get('/add-product', (request, response) => {
-   response.render('add-product', {title:'Add Product', path: '/admin/add-product' });
+    response.render('add-product', {
+        title:'Add Product', 
+        path: '/admin/add-product', 
+        activeAddProduct: true,
+        productCSS: true,
+        formsCSS: true 
+    });
 });
 
 // /admin/add-product => POST
 router.post('/add-product', (request, response) => {
-    products.push({title: request.body.title});
+    products.push({title: request.body.title, });
     response.redirect('/')
 });
 

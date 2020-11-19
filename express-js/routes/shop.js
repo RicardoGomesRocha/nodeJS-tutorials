@@ -8,7 +8,14 @@ const { products } = require('./admin');
 
 
 router.get('/', (request, response) => {
-    response.render('shop', { products, title: 'Shop', path:'/' });
+    response.render('shop', { 
+        products, 
+        title: 'Shop', 
+        path:'/', 
+        hasProducts: products && products.length > 0,
+        productCSS: true,
+        activeShop: true
+    });
 });
 
 module.exports = router;
