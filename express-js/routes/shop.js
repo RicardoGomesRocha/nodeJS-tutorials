@@ -8,8 +8,8 @@ const { products } = require('./admin');
 
 
 router.get('/', (request, response) => {
-    console.log('shop.js', products);
-    response.render('shop');
+    
+    response.render('shop', { products, title: 'Shop' });
 });
 
 module.exports = router;
