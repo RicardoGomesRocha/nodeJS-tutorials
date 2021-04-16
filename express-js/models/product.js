@@ -12,7 +12,7 @@ module.exports = class Product {
     save() {    
         const products = Product.fetchAll();
         products.push(this);
-        fs.writeFileSync(this.#productsPath, JSON.stringify(products));
+        fs.writeFileSync(Product.#productsPath, JSON.stringify(products));
     }
 
     static fetchAll() {
