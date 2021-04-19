@@ -29,8 +29,16 @@ module.exports = class Cart {
         this.save(cart);
     }
 
-    static removeProduct() {
-
+    static deleteProduct(id) {
+        const cart = this.fetchCart();
+        cart.products = cart.products.filter(product => product.id !== id);
+        if(cart.products.length > 0) {
+            cart.totalPrice = cart.products.reduce((accumulator, currentValue) => accumulator + currentValue);
+        } else {
+            cart.totalPrice = 0;
+        }
+    
+        this.save(cart);
     }
 
     static fetchCart() {

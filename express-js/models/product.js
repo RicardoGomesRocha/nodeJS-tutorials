@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const Cart = require('../models/cart');
 
 module.exports = class Product {
      
@@ -33,9 +34,7 @@ module.exports = class Product {
     }
 
     delete() {
-        let products = Product.fetchAll();
-        products = products.filter(product => product.id !== this.id);
-        fs.writeFileSync(Product.#productsPath, JSON.stringify(products));
+        Product.deleteById(this.id);
     }
 
     static fetchAll() {
@@ -55,5 +54,12 @@ module.exports = class Product {
         const products = this.fetchAll();
         return products.find((product) => product.id === id);
     }    
+
+    static deleteById(id) {
+        let products = Product.fetchAll();
+        products = products.filter(product => product.id !== id);
+        fs.writeFileSync(Product.#productsPath, JSON.stringify(products));
+        Cart.deleteProduct(this.id);
+    }
 }
 
