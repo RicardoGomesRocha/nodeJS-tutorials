@@ -5,6 +5,7 @@ const path = require('path');
 const app = express();
 
 const errorController = require('./controllers/error');
+const database = require('./util/database');
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
