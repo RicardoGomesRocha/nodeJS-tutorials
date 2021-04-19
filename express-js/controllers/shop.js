@@ -31,9 +31,21 @@ exports.getIndex = (request, response) => {
 
 
 exports.getCart = (request, response) => {
+    const cart = Cart.fetchCart();
+    const products = Product.fetchAll();
+    const cartProducts = [];
+    for(let product of products) {
+        const cartProduct = cart.products.find(p => p.id === product.id);
+        if (cartProduct) {
+            product.quantity = cartProduct.quantity;
+            cartProducts.push(product);
+            console.log(cartProducts);
+        } 
+    }
     response.render('shop/cart', { 
         title: 'Your cart', 
         path:'/cart', 
+        products
     });
 }
 
