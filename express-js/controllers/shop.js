@@ -9,9 +9,9 @@ exports.getProducts = async (request, response) => {
     });
 }
 
-exports.getProduct = (request, response) => {
+exports.getProduct = async(request, response) => {
     const productId = request.params.productId;
-    const product = Product.findById(productId);
+    const product = await Product.findById(productId);
     response.render('shop/product-detail',  { 
         product,
         title: product.title,
@@ -48,9 +48,9 @@ exports.getCart = (request, response) => {
     });
 }
 
-exports.postCart = (request, response) => {
+exports.postCart = async (request, response) => {
     const productId = request.body.productId;
-    const product = Product.findById(productId);
+    const product = await Product.findById(productId);
     Cart.addProduct(productId, product.price);
     response.redirect('/cart');
 }
