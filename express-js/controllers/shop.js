@@ -9,6 +9,17 @@ exports.getProducts = (request, response) => {
     });
 }
 
+exports.getProduct = (request, response) => {
+    const productId = request.params.productId;
+    const product = Product.findById(productId);
+    response.render('shop/product-detail',  { 
+        product,
+        title: product.title,
+        path: '/products' 
+    });
+}
+
+
 exports.getIndex = (request, response) => {
     const products = Product.fetchAll();
     response.render('shop/index', { 
@@ -24,6 +35,12 @@ exports.getCart = (request, response) => {
         title: 'Your cart', 
         path:'/cart', 
     });
+}
+
+exports.postCart = (request, response) => {
+    const productId = request.body.productId;
+    console.log(productId);
+    response.redirect('/cart');
 }
 
 exports.getCheckout = (request, response) => {

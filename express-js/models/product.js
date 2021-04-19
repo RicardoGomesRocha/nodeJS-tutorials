@@ -12,7 +12,8 @@ module.exports = class Product {
         this.price = price;
     }
 
-    save() {    
+    save() {
+        this.id = Math.random().toString();
         const products = Product.fetchAll();
         products.push(this);
         fs.writeFileSync(Product.#productsPath, JSON.stringify(products));
@@ -29,6 +30,11 @@ module.exports = class Product {
         if(!data) data = '[]';
         const products = JSON.parse(data);
         return products;
+    }
+
+    static findById(id) {
+        const products = this.fetchAll();
+        return products.find((product) => product.id === id);
     }
     
 }
