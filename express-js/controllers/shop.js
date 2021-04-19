@@ -39,13 +39,12 @@ exports.getCart = (request, response) => {
         if (cartProduct) {
             product.quantity = cartProduct.quantity;
             cartProducts.push(product);
-            console.log(cartProducts);
         } 
     }
     response.render('shop/cart', { 
         title: 'Your cart', 
         path:'/cart', 
-        products
+        products: cartProducts
     });
 }
 
@@ -61,6 +60,13 @@ exports.getCheckout = (request, response) => {
         title: 'Your cart', 
         path:'/checkout', 
     });
+}
+
+exports.postCartDeleteProduct = (request, response) => {
+    const productId = request.body.productId;
+    console.log(productId);
+    Cart.deleteProduct(productId);
+    response.redirect('/cart');
 }
 
 exports.getOrders = (request, response) => {
