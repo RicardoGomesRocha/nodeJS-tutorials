@@ -11,8 +11,13 @@ exports.getAddProduct = (request, response) => {
 };
 
 exports.addProduct = (request, response) => {
-    new Product(request.body.title).save();
-    response.redirect('/');
+    const title = request.body.title;
+    const imageUrl = request.body.imageUrl;
+    const price = request.body.price;
+    const description = request.body.description;
+
+    new Product(title, imageUrl, description, price).save();
+    response.redirect('/admin/products');
 };
 
 exports.getProducts = (request, response) => {

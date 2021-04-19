@@ -5,8 +5,11 @@ module.exports = class Product {
      
     static #productsPath = path.join(require.main.path, 'data', 'products.json');
 
-    constructor(title) {
+    constructor(title, imageUrl, description, price) {
         this.title = title;
+        this.imageUrl = imageUrl;
+        this.description = description;
+        this.price = price;
     }
 
     save() {    
