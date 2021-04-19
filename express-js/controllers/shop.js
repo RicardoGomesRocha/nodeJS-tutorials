@@ -33,3 +33,11 @@ exports.getCheckout = (request, response) => {
     });
 }
 
+exports.getOrders = (request, response) => {
+    response.render('shop/orders', { 
+        title: 'Your orders', 
+        path:'/orders', 
+    });
+}
+
+
