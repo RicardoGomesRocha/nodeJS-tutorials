@@ -19,16 +19,17 @@
                                     <img src="<%= product.imageUrl %>" alt="<%= product.title %>">
                                 </div>
                                 <div class="card__content">
-                                    <h2 class="product__price">$<%= product.price %>
+                                    <h2 class="product__price">$
+                                        <%= product.price %>
                                     </h2>
                                     <p class="product__description">
                                         <%= product.description %>
                                     </p>
                                 </div>
                                 <div class="card__actions">
-                                    <a href="/admin/edit-product/" class="btn">Edit</a>
-                                    <form action="/admin/edit-product" method="POST">
-                                        <button class="btn" type="submit">Remove</button>
+                                    <a href="/admin/edit-product" class="btn">Edit</a>
+                                    <form action="/admin/delete-product" method="POST">
+                                        <button class="btn" type="submit">Delete</button>
                                     </form>
 
                                 </div>
@@ -36,7 +37,7 @@
                             <% } %>
                     </div>
                     <% } else { %>
-                        <h1>Ups! No products found...</h1>
+                        <h1>No Products Found!</h1>
                         <% } %>
             </main>
             <%- include('../includes/end.ejs') %>
