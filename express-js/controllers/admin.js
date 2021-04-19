@@ -3,7 +3,8 @@ const Product = require('../models/product');
 exports.getAddProduct = (request, response) => {
     response.render('admin/edit-product', {
         title:'Add Product', 
-        path: '/admin/add-product'
+        path: '/admin/add-product',
+        editing: false
     });
 };
 
@@ -22,10 +23,17 @@ exports.getEditProduct = (request, response) => {
     if (!editMode) {
         return response.redirect('/');
     }
+    const productId = request.params.productId;
+    const product = Product.findById(productId);
+    if(!product) {
+        return response.redirect('/');
+    }
+    console.log(product);
     response.render('admin/edit-product', {
         title:'Add Product', 
         path: '/admin/add-product',
-        editing: editMode
+        editing: editMode,
+        product
     });
 };
 
