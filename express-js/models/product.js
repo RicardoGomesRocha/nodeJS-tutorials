@@ -21,11 +21,11 @@ module.exports = class Product {
 
     static fetchAll() {
 
-        let data = '[]';
+        let data;
         try {
             data = fs.readFileSync(this.#productsPath);
         }catch(ex) {
-            console.err(ex);
+            console.error(ex);
         }
         if(!data) data = '[]';
         const products = JSON.parse(data);
