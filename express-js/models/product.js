@@ -5,7 +5,8 @@ module.exports = class Product {
      
     static #productsPath = path.join(require.main.path, 'data', 'products.json');
 
-    constructor(title, imageUrl, description, price) {
+    constructor(id, title, imageUrl, description, price) {
+        this.id = id;
         this.title = title;
         this.imageUrl = imageUrl;
         this.description = description;
@@ -13,9 +14,21 @@ module.exports = class Product {
     }
 
     save() {
-        this.id = Math.random().toString();
         const products = Product.fetchAll();
-        products.push(this);
+        let product;
+        if(this.id) {
+           const index = products.findIndex(product => product.id === this.id);
+           if(index > -1) {
+               products[index] = this;
+           } else {
+               product = this;
+                fs.writeFileSync(Product.#productsPath, JSON.stringify(products));s
+           }
+        } else {
+            this.id = Math.random().toString();
+            product = this;
+            products.push(product);
+        }
         fs.writeFileSync(Product.#productsPath, JSON.stringify(products));
     }
 
@@ -35,6 +48,6 @@ module.exports = class Product {
     static findById(id) {
         const products = this.fetchAll();
         return products.find((product) => product.id === id);
-    }
-    
+    }    
 }
+

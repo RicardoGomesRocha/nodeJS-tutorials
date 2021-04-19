@@ -13,8 +13,7 @@ exports.addProduct = (request, response) => {
     const imageUrl = request.body.imageUrl;
     const price = request.body.price;
     const description = request.body.description;
-
-    new Product(title, imageUrl, description, price).save();
+    new Product(null, title, imageUrl, description, price).save();
     response.redirect('/');
 };
 
@@ -28,7 +27,6 @@ exports.getEditProduct = (request, response) => {
     if(!product) {
         return response.redirect('/');
     }
-    console.log(product);
     response.render('admin/edit-product', {
         title:'Add Product', 
         path: '/admin/add-product',
@@ -37,8 +35,23 @@ exports.getEditProduct = (request, response) => {
     });
 };
 
+exports.postEditProduct = (request, response) => {
+    const product = new Product(
+        request.body.id,
+        request.body.title,
+        request.body.imageUrl,
+        request.body.description,
+        +request.body.price
+    );
+    console.log(request.body);
+    console.log(product);
+    product.save();
+    response.redirect(`products`);
+}
+
 exports.getProducts = (request, response) => {
     const products = Product.fetchAll();
+    console.log(products);
     response.render('admin/products', { 
         products, 
         title: 'Admin Products', 
