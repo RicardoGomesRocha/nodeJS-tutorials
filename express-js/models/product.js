@@ -22,13 +22,19 @@ module.exports = class Product {
                products[index] = this;
            } else {
                product = this;
-                fs.writeFileSync(Product.#productsPath, JSON.stringify(products));s
+                fs.writeFileSync(Product.#productsPath, JSON.stringify(products));
            }
         } else {
             this.id = Math.random().toString();
             product = this;
             products.push(product);
         }
+        fs.writeFileSync(Product.#productsPath, JSON.stringify(products));
+    }
+
+    delete() {
+        let products = Product.fetchAll();
+        products = products.filter(product => product.id !== this.id);
         fs.writeFileSync(Product.#productsPath, JSON.stringify(products));
     }
 

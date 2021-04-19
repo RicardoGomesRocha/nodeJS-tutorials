@@ -14,7 +14,7 @@ exports.addProduct = (request, response) => {
     const price = request.body.price;
     const description = request.body.description;
     new Product(null, title, imageUrl, description, price).save();
-    response.redirect('/');
+    response.redirect('/admin/products');
 };
 
 exports.getEditProduct = (request, response) => {
@@ -46,7 +46,15 @@ exports.postEditProduct = (request, response) => {
     console.log(request.body);
     console.log(product);
     product.save();
-    response.redirect(`products`);
+    response.redirect(`/admin/products`);
+}
+
+exports.postDeleteProduct = (request, response) => {
+    const product = new Product(
+        request.body.id
+    )
+    product.delete();
+    response.redirect(`/admin/products`);
 }
 
 exports.getProducts = (request, response) => {
