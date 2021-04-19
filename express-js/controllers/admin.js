@@ -8,22 +8,22 @@ exports.getAddProduct = (request, response) => {
     });
 };
 
-exports.addProduct = (request, response) => {
+exports.addProduct = async(request, response) => {
     const title = request.body.title;
     const imageUrl = request.body.imageUrl;
     const price = request.body.price;
     const description = request.body.description;
-    new Product(null, title, imageUrl, description, price).save();
+    await new Product(null, title, imageUrl, description, price).save();
     response.redirect('/admin/products');
 };
 
-exports.getEditProduct = (request, response) => {
+exports.getEditProduct = async(request, response) => {
     const editMode = Boolean(request.query.editing);
     if (!editMode) {
         return response.redirect('/');
     }
     const productId = request.params.productId;
-    const product = Product.findById(productId);
+    const product = await Product.findById(productId);
     if(!product) {
         return response.redirect('/');
     }
@@ -35,7 +35,7 @@ exports.getEditProduct = (request, response) => {
     });
 };
 
-exports.postEditProduct = (request, response) => {
+exports.postEditProduct = async(request, response) => {
     const product = new Product(
         request.body.id,
         request.body.title,
@@ -45,21 +45,20 @@ exports.postEditProduct = (request, response) => {
     );
     console.log(request.body);
     console.log(product);
-    product.save();
+    await product.save();
     response.redirect(`/admin/products`);
 }
 
-exports.postDeleteProduct = (request, response) => {
+exports.postDeleteProduct = async(request, response) => {
     const product = new Product(
         request.body.id
     )
-    product.delete();
+    await product.delete();
     response.redirect(`/admin/products`);
 }
 
-exports.getProducts = (request, response) => {
-    const products = Product.fetchAll();
-    console.log(products);
+exports.getProducts = async(request, response) => {
+    const products = await Product.fetchAll();
     response.render('admin/products', { 
         products, 
         title: 'Admin Products', 
