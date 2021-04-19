@@ -16,12 +16,11 @@ exports.addProduct = (request, response) => {
 };
 
 exports.getProducts = (request, response) => {
-    console.log("get products");
     const products = Product.fetchAll();
-    response.render('shop/product-list', { 
+    response.render('admin/products', { 
         products, 
-        title: 'Products List', 
-        path:'/', 
+        title: 'Admin Products', 
+        path:'/admin/products', 
         hasProducts: products && products.length > 0,
         productCSS: true,
         activeShop: true
