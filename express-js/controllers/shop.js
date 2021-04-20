@@ -11,7 +11,7 @@ exports.getProducts = async (request, response) => {
 
 exports.getProduct = async(request, response) => {
     const productId = request.params.productId;
-    const product = await Product.findById(productId);
+    const product = await Product.findByPk(productId);
     response.render('shop/product-detail',  { 
         product,
         title: product.title,

@@ -203,6 +203,10 @@ form {
     }
 }
 
+.image img {
+    max-height: 20rem;
+}
+
 .centered {
     text-align: center;
 }
