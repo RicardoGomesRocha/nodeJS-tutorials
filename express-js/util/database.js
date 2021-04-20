@@ -1,8 +1,8 @@
-const {Sequelize} = require('sequelize');
+const mongodb = require('mongodb');
+const MongoClient = mongodb.MongoClient;
 
-const sequelize = new Sequelize('node-complete', 'root', 'admin', {
-    dialect: 'mysql', 
-    host: 'localhost'
-});
+mongoConnect = async() => {
+  return await MongoClient.connect('mongodb+srv://admin:admin@cluster0.znfhk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
+}
 
-module.exports = sequelize;
+module.exports = mongoConnect;
