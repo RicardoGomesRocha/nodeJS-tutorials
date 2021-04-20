@@ -31,27 +31,29 @@ exports.getIndex = async (request, response) => {
 
 
 exports.getCart = async (request, response) => {
-    const cart = Cart.fetchCart();
-    const products = await Product.findAll();
-    const cartProducts = [];
-    for(let product of products) {
-        const cartProduct = cart.products.find(p => p.id === product.id);
-        if (cartProduct) {
-            product.quantity = cartProduct.quantity;
-            cartProducts.push(product);
-        } 
-    }
+    const cart = await request.user.getCart();
+    const products = await cart.getProducts();
     response.render('shop/cart', { 
         title: 'Your cart', 
         path:'/cart', 
-        products: cartProducts
+        products
     });
 }
 
 exports.postCart = async (request, response) => {
-    const productId = request.body.productId;
-    const product = await Product.findById(productId);
-    Cart.addProduct(productId, product.price);
+    const productId = +request.body.productId;
+    const cart = await request.user.getCart();
+    const products = await cart.getProducts({where: {id: productId}});
+    let product;
+    let quantity = 1;
+    if(products && products.length > 0) {
+        product = products[0];
+        quantity = product.cartItem.quantity + 1;
+    } else {
+        const products = await request.user.getProducts({where: {id: productId}});
+        product = products[0];
+    }
+    cart.addProduct(product, { through: { quantity} });
     response.redirect('/cart');
 }
 
