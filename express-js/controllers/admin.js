@@ -13,13 +13,11 @@ exports.addProduct = async(request, response) => {
     const imageUrl = request.body.imageUrl;
     const price = request.body.price;
     const description = request.body.description;
-
     try {
-        await Product.create({ title, imageUrl, price, description });
+        await request.user?.createProduct({ title, imageUrl, price, description });
     }catch(error) {
         console.error(error);
     }
-    
 
     response.redirect('/admin/products');
 };
@@ -30,42 +28,44 @@ exports.getEditProduct = async(request, response) => {
         return response.redirect('/');
     }
     const productId = request.params.productId;
-    const product = await Product.findById(productId);
-    if(!product) {
+    const products = await request.user.getProducts({where: {id: productId}});
+    if(!products || products.length === 0) {
         return response.redirect('/');
     }
     response.render('admin/edit-product', {
         title:'Add Product', 
         path: '/admin/add-product',
         editing: editMode,
-        product
+        product: products[0]
     });
 };
 
 exports.postEditProduct = async(request, response) => {
-    const product = new Product(
-        request.body.id,
-        request.body.title,
-        request.body.imageUrl,
-        request.body.description,
-        +request.body.price
-    );
-    console.log(request.body);
-    console.log(product);
+    const id = request.body.id;
+    const title = request.body.title;
+    const imageUrl = request.body.imageUrl;
+    const description = request.body.description;
+    const price = request.body.price;
+
+    const product = await Product.findByPk(id);
+    product.title = title;
+    product.imageUrl = imageUrl;
+    product.description = description;
+    product.price = price;
     await product.save();
+
     response.redirect(`/admin/products`);
 }
 
 exports.postDeleteProduct = async(request, response) => {
-    const product = new Product(
-        request.body.id
-    )
-    await product.delete();
+    const productId = request.body.id;
+    const product = await Product.findByPk(productId);
+    product.destroy();
     response.redirect(`/admin/products`);
 }
 
 exports.getProducts = async(request, response) => {
-    const products = await Product.findAll();
+    const products = await request.user.getProducts();
     response.render('admin/products', { 
         products, 
         title: 'Admin Products', 
