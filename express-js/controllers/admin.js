@@ -13,8 +13,9 @@ exports.addProduct = async(request, response) => {
     const imageUrl = request.body.imageUrl;
     const price = request.body.price;
     const description = request.body.description;
+    
     try {
-        await request.user?.createProduct({ title, imageUrl, price, description });
+        await new Product(title, price, description, imageUrl).save()
     }catch(error) {
         console.error(error);
     }
