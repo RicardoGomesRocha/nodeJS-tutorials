@@ -15,7 +15,7 @@ exports.addProduct = async(request, response) => {
     const description = request.body.description;
     
     try {
-        await new Product(title, price, description, imageUrl).save()
+        await new Product(title, price, description, imageUrl).save();
     }catch(error) {
         console.error(error);
     }
@@ -29,15 +29,15 @@ exports.getEditProduct = async(request, response) => {
         return response.redirect('/');
     }
     const productId = request.params.productId;
-    const products = await request.user.getProducts({where: {id: productId}});
-    if(!products || products.length === 0) {
+    const product = await Product.findById(productId);
+    if(!product) {
         return response.redirect('/');
     }
     response.render('admin/edit-product', {
         title:'Add Product', 
         path: '/admin/add-product',
         editing: editMode,
-        product: products[0]
+        product
     });
 };
 
@@ -47,26 +47,20 @@ exports.postEditProduct = async(request, response) => {
     const imageUrl = request.body.imageUrl;
     const description = request.body.description;
     const price = request.body.price;
-
-    const product = await Product.findByPk(id);
-    product.title = title;
-    product.imageUrl = imageUrl;
-    product.description = description;
-    product.price = price;
-    await product.save();
+    await new Product(title, price, description, imageUrl, id).save();
 
     response.redirect(`/admin/products`);
 }
 
 exports.postDeleteProduct = async(request, response) => {
     const productId = request.body.id;
-    const product = await Product.findByPk(productId);
+    const product = await Product.findById(productId);
     product.destroy();
     response.redirect(`/admin/products`);
 }
 
 exports.getProducts = async(request, response) => {
-    const products = await request.user.getProducts();
+    const products = await Product.findAll();
     response.render('admin/products', { 
         products, 
         title: 'Admin Products', 

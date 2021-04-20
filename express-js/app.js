@@ -33,21 +33,3 @@ mongoConnect().then(() => {
     app.listen(3000);
     console.log('Listening in 3000.')
 }).catch((error)=>console.error(error));
-
-
-
-
-// sequelize.sync(
-//     // {force: true}
-//     ).then(async result => {
-//     let user = await User.findByPk(1);
-//     if (!user) {
-//         user = await User.create({
-//             name: 'Ricardo',
-//             email: 'test@test.com'
-//         });
-//         await user.createCart();
-//     }
-//     app.listen(3000);
-// }).catch((error) => console.error(error));
-
