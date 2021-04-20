@@ -83,13 +83,17 @@ exports.postOrder = async (request, response) => {
         };
         return product;
     }));
-    console.log(products);
+    cart.setProducts(null);
+    response.redirect('/orders');
 }
 
-exports.getOrders = (request, response) => {
+exports.getOrders = async (request, response) => {
+    const orders = await request.user.getOrders({include:['products']});
+    orders.forEach((order) => console.log(order));
     response.render('shop/orders', { 
         title: 'Your orders', 
-        path:'/orders', 
+        path:'/orders',
+        orders
     });
 }
 
