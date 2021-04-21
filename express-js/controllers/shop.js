@@ -60,22 +60,12 @@ exports.postCartDeleteProduct = async(request, response) => {
 }
 
 exports.postOrder = async (request, response) => {
-    const cart = await request.user.getCart();
-    const products = await cart.getProducts();
-    const order = await request.user.createOrder();
-    order.addProducts(products.map((product) => {
-        product.orderItem = {
-            quantity: product.cartItem.quantity
-        };
-        return product;
-    }));
-    cart.setProducts(null);
+    const cart = await request.user.addOrder();
     response.redirect('/orders');
 }
 
 exports.getOrders = async (request, response) => {
-    const orders = await request.user.getOrders({include:['products']});
-    orders.forEach((order) => console.log(order));
+    const orders = await request.user.getOrders();
     response.render('shop/orders', { 
         title: 'Your orders', 
         path:'/orders',

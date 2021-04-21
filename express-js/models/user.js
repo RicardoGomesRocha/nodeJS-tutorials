@@ -9,6 +9,24 @@ class User {
         this.cart = cart;
     }
 
+    async addOrder() {
+        const products = await this.getCartItems();
+        const order = {
+            items: products,
+            userId: this._id
+        };
+        const db = getDb();
+        await db.collection('orders').insertOne(order);
+        this.cart = {items: []}
+        await db.collection('users').updateOne({_id: this._id }, {$set: {cart: this.cart}});
+    }
+
+    async getOrders() {
+        const db = getDb();
+        const orders =  db.collection('orders').findOne({userId: this._id});
+        return orders;
+    }
+
     async getCartItems() {
         const db = getDb();
         const productIds = this.cart.items.map((item => item.productId))
