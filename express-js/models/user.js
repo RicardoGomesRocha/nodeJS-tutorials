@@ -32,7 +32,13 @@ userSchema.methods.addToCart = async function(product) {
 }
 
 
+userSchema.methods.removeFromCart = async function(productId) {
+    this.cart.items = this.cart.items.filter((item) => productId !== item.productId.toString());
+    return this.save();
+}
+
 module.exports = mongoose.model('User', userSchema);
+
 
 
 
