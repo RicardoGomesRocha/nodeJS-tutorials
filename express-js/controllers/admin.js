@@ -13,8 +13,9 @@ exports.addProduct = async(request, response) => {
     const imageUrl = request.body.imageUrl;
     const price = request.body.price;
     const description = request.body.description;
+    const userId = request.user._id;
     try {
-        await new Product({title, price, description, imageUrl}).save();
+        await new Product({title, price, description, imageUrl, userId}).save();
     }catch(error) {
         console.error(error);
     }
