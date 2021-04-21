@@ -54,11 +54,8 @@ exports.getCheckout = (request, response) => {
 }
 
 exports.postCartDeleteProduct = async(request, response) => {
-    const productId = +request.body.productId;
-    const cart = await request.user.getCart();
-    const products = await cart.getProducts({where: {id: productId}});
-    const product = products[0];
-    product?.cartItem.destroy();
+    const productId = request.body.productId;
+    await request.user.deleteItemFromCart(productId);
     response.redirect('/cart');
 }
 

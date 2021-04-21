@@ -21,6 +21,13 @@ class User {
         });
     }
 
+    async deleteItemFromCart(productId) {
+        const items = this.cart.items.filter((item) => productId !== item.productId.toString());
+        const db = getDb();
+        return db.collection('users')
+            .updateOne({_id: this._id }, {$set: { cart: {items}}})
+    }
+
     async save() {
         const db = getDb();
         let user;
