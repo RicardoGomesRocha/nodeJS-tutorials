@@ -58,7 +58,7 @@ exports.postDeleteProduct = async(request, response) => {
 }
 
 exports.getProducts = async(request, response) => {
-    const products = await Product.findAll();
+    const products = await Product.find();
     response.render('admin/products', { 
         products, 
         title: 'Admin Products', 
