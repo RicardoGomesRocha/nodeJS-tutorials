@@ -13,6 +13,24 @@ const userSchema = new Schema({
     }
 });
 
+userSchema.methods.addToCart = async function(product) {
+    const index = this.cart.items.findIndex(cp => cp.productId.toString() === product._id.toString());
+    let quantity = 1;
+    const items = [...this.cart.items];
+    
+    if (index > -1) {
+        quantity = ++this.cart.items[index].quantity;
+        items[index].quantity = quantity;
+    } else {
+        items.push({
+            productId: product._id,
+            quantity
+        });
+    }
+    this.cart = {items};
+    return this.save()
+}
+
 
 module.exports = mongoose.model('User', userSchema);
 

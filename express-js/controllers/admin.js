@@ -59,7 +59,8 @@ exports.postDeleteProduct = async(request, response) => {
 }
 
 exports.getProducts = async(request, response) => {
-    const products = await Product.find();
+    const products = await Product.find().populate('userId');
+    console.log(products);
     response.render('admin/products', { 
         products, 
         title: 'Admin Products', 
