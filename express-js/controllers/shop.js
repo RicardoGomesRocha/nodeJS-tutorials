@@ -31,8 +31,7 @@ exports.getIndex = async (request, response) => {
 
 
 exports.getCart = async (request, response) => {
-    const cart = await request.user.getCart();
-    const products = await cart.getProducts();
+    const products = await request.user.getCartItems();
     response.render('shop/cart', { 
         title: 'Your cart', 
         path:'/cart', 
@@ -41,19 +40,9 @@ exports.getCart = async (request, response) => {
 }
 
 exports.postCart = async (request, response) => {
-    const productId = +request.body.productId;
-    const cart = await request.user.getCart();
-    const products = await cart.getProducts({where: {id: productId}});
-    let product;
-    let quantity = 1;
-    if(products && products.length > 0) {
-        product = products[0];
-        quantity = product.cartItem.quantity + 1;
-    } else {
-        const products = await request.user.getProducts({where: {id: productId}});
-        product = products[0];
-    }
-    cart.addProduct(product, { through: { quantity} });
+    const productId = request.body.productId;
+    const product = await Product.findById(productId);
+    await request.user.addToCart(product);
     response.redirect('/cart');
 }
 

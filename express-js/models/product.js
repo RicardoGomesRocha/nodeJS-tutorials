@@ -2,12 +2,13 @@ const { getDb } = require('../util/database');
 const {ObjectId} = require('mongodb');
 
 class Product {
-    constructor(title, price, description, imageUrl, id) {
+    constructor(title, price, description, imageUrl, id, userId) {
         this.title = title;
         this.price = price;
         this.description = description;
         this.imageUrl = imageUrl;
-        this._id = ObjectId(id);
+        this._id = id ?? undefined;
+        this.userId = Object(userId);
     }
 
     async save() {
@@ -18,7 +19,7 @@ class Product {
         } else {
             product = await db.collection('products').insertOne(this);
         }
-        return product
+        return product;
     }
 
     static async findAll() {
@@ -29,6 +30,11 @@ class Product {
     static async findById(id) {
         const db = getDb();
         return db.collection('products').find({_id: ObjectId(id)}).next();
+    }
+
+    static async deleteById(id) {
+        const db = getDb();
+        return db.collection('products').deleteOne({_id: ObjectId(id)});
     }
 }
 

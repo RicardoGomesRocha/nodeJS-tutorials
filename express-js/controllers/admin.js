@@ -13,9 +13,9 @@ exports.addProduct = async(request, response) => {
     const imageUrl = request.body.imageUrl;
     const price = request.body.price;
     const description = request.body.description;
-    
+    const userId = request.user._id;
     try {
-        await new Product(title, price, description, imageUrl).save();
+        await new Product(title, price, description, imageUrl, null, userId).save();
     }catch(error) {
         console.error(error);
     }
@@ -54,8 +54,7 @@ exports.postEditProduct = async(request, response) => {
 
 exports.postDeleteProduct = async(request, response) => {
     const productId = request.body.id;
-    const product = await Product.findById(productId);
-    product.destroy();
+    await Product.deleteById(productId);
     response.redirect(`/admin/products`);
 }
 
