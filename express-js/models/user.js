@@ -31,6 +31,11 @@ userSchema.methods.addToCart = async function(product) {
     return this.save()
 }
 
+userSchema.methods.clearCart = async function() {
+    this.cart = {items: []};
+    return this.save()
+}
+
 
 userSchema.methods.removeFromCart = async function(productId) {
     this.cart.items = this.cart.items.filter((item) => productId !== item.productId.toString());

@@ -1,5 +1,5 @@
 const Product = require('../models/product');
-
+const Order = require('../models/order');
 exports.getProducts = async (request, response) => {
     const products = await Product.find();
     response.render('shop/product-list', { 
@@ -61,12 +61,25 @@ exports.postCartDeleteProduct = async(request, response) => {
 }
 
 exports.postOrder = async (request, response) => {
-    const cart = await request.user.addOrder();
+    const user = await request.user.populate('cart.items.productId').execPopulate();
+    const products = user.cart.items.map((item) => {
+        return {quantity: item.quantity, product: { ...item.productId.toObject() }};
+    });
+    const order = new Order({
+        user: {
+            name: user.username,
+            userId: user
+        },
+        products,
+
+    });
+    await order.save();
+    await user.clearCart();
     response.redirect('/orders');
 }
 
 exports.getOrders = async (request, response) => {
-    const orders = await request.user.getOrders();
+    const orders = await Order.find({'user.userId': request.user._id});
     response.render('shop/orders', { 
         title: 'Your orders', 
         path:'/orders',
